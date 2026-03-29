@@ -332,17 +332,29 @@ export default function WeatherDashboard() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-8 pb-6 text-center text-xs text-gray-400">
-        Powered by{' '}
-        <a
-          href="https://open-meteo.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-400 hover:underline"
-        >
-          Open-Meteo
-        </a>{' '}
-        • Free &amp; Open Source Weather API
+      <footer className="mt-8 pb-6 text-center text-xs text-gray-400 space-y-1">
+        <div>
+          <a
+            href="https://oneeye10.github.io/sh/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:underline font-medium"
+          >
+            🌐 View Live Demo
+          </a>
+        </div>
+        <div>
+          Powered by{' '}
+          <a
+            href="https://open-meteo.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:underline"
+          >
+            Open-Meteo
+          </a>{' '}
+          • Free &amp; Open Source Weather API
+        </div>
       </footer>
     </div>
   );
