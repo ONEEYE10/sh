@@ -50,6 +50,15 @@ export default function CurrentWeather({
     ? 'from-blue-400/20 via-sky-300/10 to-transparent'
     : 'from-indigo-800/30 via-violet-900/20 to-transparent';
 
+  const lat = location.latitude;
+  const lon = location.longitude;
+  const validCoords =
+    typeof lat === 'number' && isFinite(lat) && lat >= -90 && lat <= 90 &&
+    typeof lon === 'number' && isFinite(lon) && lon >= -180 && lon <= 180;
+  const mapsUrl = validCoords
+    ? `https://maps.google.com/?q=${lat.toFixed(6)},${lon.toFixed(6)}`
+    : undefined;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -65,7 +74,13 @@ export default function CurrentWeather({
 
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-2">
+        <a
+          href={mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 hover:opacity-75 transition-opacity"
+          title="View on Google Maps"
+        >
           <MapPin className="w-4 h-4 text-blue-400" />
           <div>
             <h2 className="text-lg font-bold text-gray-800 dark:text-white leading-tight">
@@ -77,7 +92,7 @@ export default function CurrentWeather({
               </p>
             )}
           </div>
-        </div>
+        </a>
         <div className="flex items-center gap-2">
           <button
             onClick={onToggleFavorite}
