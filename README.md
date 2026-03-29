@@ -23,7 +23,7 @@ I’m currently exploring automated workflows to turn high-fidelity UI designs i
 
 ## 🌤️ Weather Dashboard
 
-A production-ready, animated weather dashboard built with **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS**, and **Framer Motion**.
+A production-ready, animated weather dashboard built with **Next.js 15 (App Router)**, **TypeScript**, **Tailwind CSS**, and **Framer Motion**.
 
 ### 📁 Location
 ```
@@ -77,7 +77,7 @@ npm start
 
 ### 🛠️ Tech Stack
 
-- **Next.js 14** (App Router, TypeScript)
+- **Next.js 15** (App Router, TypeScript)
 - **Tailwind CSS** — utility-first styling
 - **Framer Motion** — animations
 - **Lucide React** — icons
