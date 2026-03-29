@@ -14,6 +14,8 @@ import WeatherAlerts from '@/components/WeatherAlerts';
 import ThemeToggle from '@/components/ThemeToggle';
 import UnitToggle from '@/components/UnitToggle';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import LifeIndex from '@/components/LifeIndex';
+import AllergyOutlook from '@/components/AllergyOutlook';
 
 import { useWeather } from '@/hooks/useWeather';
 import { useGeolocation } from '@/hooks/useGeolocation';
@@ -188,7 +190,7 @@ export default function WeatherDashboard() {
           >
             <CloudSun className="w-6 h-6 text-blue-400" />
             <span className="font-bold text-gray-800 dark:text-white text-lg hidden sm:block">
-              WeatherDash
+              86° Weather
             </span>
           </Link>
 
@@ -293,6 +295,12 @@ export default function WeatherDashboard() {
                 sunrise={weather.data.daily.sunrise[0]}
                 sunset={weather.data.daily.sunset[0]}
               />
+
+              {/* Life Index */}
+              <LifeIndex current={weather.data.current} />
+
+              {/* Allergy Outlook */}
+              <AllergyOutlook current={weather.data.current} />
 
               {/* Favorites */}
               <FavoriteLocations

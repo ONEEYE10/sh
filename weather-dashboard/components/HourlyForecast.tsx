@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, Droplets } from 'lucide-react';
 import type { HourlyData } from '@/types/weather';
 import { getWeatherInfo, formatTemp } from '@/types/weather';
 import type { TemperatureUnit } from '@/types/weather';
+import WeatherIcon from '@/components/WeatherIcon';
 
 interface HourlyForecastProps {
   hourly: HourlyData;
@@ -65,7 +66,6 @@ export default function HourlyForecast({ hourly, unit }: HourlyForecastProps) {
       >
         {slice.map((timeStr, i) => {
           const realIdx = startIdx >= 0 ? startIdx + i : i;
-          const weather = getWeatherInfo(hourly.weather_code[realIdx]);
           const time = new Date(timeStr);
           const isNow = i === 0;
 
@@ -84,9 +84,11 @@ export default function HourlyForecast({ hourly, unit }: HourlyForecastProps) {
               <p className="text-xs font-medium">
                 {isNow ? 'Now' : time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
               </p>
-              <div className="text-2xl" role="img" aria-label={weather.label}>
-                {weather.icon}
-              </div>
+              <WeatherIcon
+                code={hourly.weather_code[realIdx]}
+                isDay={new Date(timeStr).getHours() >= 6 && new Date(timeStr).getHours() < 20}
+                size={28}
+              />
               <p className="text-sm font-semibold">
                 {formatTemp(hourly.temperature_2m[realIdx], unit)}
               </p>

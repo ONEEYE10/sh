@@ -5,6 +5,7 @@ import { Droplets, Wind } from 'lucide-react';
 import type { DailyData } from '@/types/weather';
 import { getWeatherInfo, formatTemp } from '@/types/weather';
 import type { TemperatureUnit } from '@/types/weather';
+import WeatherIcon from '@/components/WeatherIcon';
 
 interface ForecastCardProps {
   daily: DailyData;
@@ -29,7 +30,6 @@ export default function ForecastCard({ daily, unit }: ForecastCardProps) {
         {days.map((dateStr, i) => {
           const date = new Date(dateStr);
           const isToday = i === 0;
-          const weather = getWeatherInfo(daily.weather_code[i]);
 
           return (
             <motion.div
@@ -51,9 +51,7 @@ export default function ForecastCard({ daily, unit }: ForecastCardProps) {
               </div>
 
               {/* Icon */}
-              <div className="text-2xl" role="img" aria-label={weather.label}>
-                {weather.icon}
-              </div>
+              <WeatherIcon code={daily.weather_code[i]} isDay size={28} />
 
               {/* Stats */}
               <div className="flex items-center gap-3 text-xs text-gray-400">

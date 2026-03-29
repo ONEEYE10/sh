@@ -13,8 +13,9 @@ import {
   MapPin,
 } from 'lucide-react';
 import type { WeatherResponse, Location } from '@/types/weather';
-import { getWeatherInfo, formatTemp, getWindDirection } from '@/types/weather';
+import { formatTemp, getWindDirection, getWeatherInfo } from '@/types/weather';
 import type { TemperatureUnit } from '@/types/weather';
+import WeatherIcon from '@/components/WeatherIcon';
 
 interface CurrentWeatherProps {
   data: WeatherResponse;
@@ -26,8 +27,44 @@ interface CurrentWeatherProps {
   lastUpdated: Date | null;
 }
 
+function tempGradient(celsius: number): { bg: string; border: string; glow: string } {
+  if (celsius < 0) {
+    return {
+      bg: 'from-blue-950/70 via-blue-900/50 to-cyan-900/40',
+      border: 'border-blue-400/25',
+      glow: 'bg-blue-400/15',
+    };
+  }
+  if (celsius < 10) {
+    return {
+      bg: 'from-blue-700/50 via-sky-600/30 to-cyan-600/20',
+      border: 'border-sky-400/25',
+      glow: 'bg-sky-400/15',
+    };
+  }
+  if (celsius < 20) {
+    return {
+      bg: 'from-teal-600/40 via-emerald-500/25 to-sky-500/20',
+      border: 'border-teal-400/25',
+      glow: 'bg-teal-400/15',
+    };
+  }
+  if (celsius < 28) {
+    return {
+      bg: 'from-amber-500/40 via-orange-400/25 to-yellow-400/15',
+      border: 'border-amber-400/30',
+      glow: 'bg-amber-400/15',
+    };
+  }
+  return {
+    bg: 'from-orange-600/50 via-red-500/30 to-rose-400/20',
+    border: 'border-orange-400/30',
+    glow: 'bg-orange-400/15',
+  };
+}
+
 const statItem = (icon: React.ReactNode, label: string, value: string) => (
-  <div className="flex flex-col items-center gap-1 p-3 rounded-xl bg-white/10 dark:bg-gray-800/40 backdrop-blur-sm">
+  <div className="flex flex-col items-center gap-1 p-3 rounded-xl bg-white/10 dark:bg-white/5 backdrop-blur-sm border border-white/15 dark:border-white/8">
     <div className="text-blue-400">{icon}</div>
     <p className="text-xs text-gray-400">{label}</p>
     <p className="text-sm font-semibold text-gray-800 dark:text-white">{value}</p>
@@ -45,10 +82,7 @@ export default function CurrentWeather({
 }: CurrentWeatherProps) {
   const { current } = data;
   const weather = getWeatherInfo(current.weather_code);
-
-  const bgGradient = current.is_day
-    ? 'from-blue-400/20 via-sky-300/10 to-transparent'
-    : 'from-indigo-800/30 via-violet-900/20 to-transparent';
+  const { bg, border, glow } = tempGradient(current.temperature);
 
   const lat = location.latitude;
   const lon = location.longitude;
@@ -64,16 +98,20 @@ export default function CurrentWeather({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`relative rounded-3xl p-6 bg-gradient-to-br ${bgGradient} 
-                  border border-white/20 dark:border-gray-700/50 
-                  backdrop-blur-md overflow-hidden`}
+      className={`relative rounded-3xl p-6 bg-gradient-to-br ${bg}
+                  border ${border}
+                  backdrop-blur-xl overflow-hidden
+                  shadow-2xl`}
     >
-      {/* Background decoration */}
-      <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-blue-400/10 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-8 -left-8 w-36 h-36 rounded-full bg-purple-400/10 blur-2xl pointer-events-none" />
+      {/* Glassmorphism inner highlight */}
+      <div className="absolute inset-0 rounded-3xl bg-white/5 dark:bg-white/3 pointer-events-none" />
+
+      {/* Background glow blobs */}
+      <div className={`absolute -top-14 -right-14 w-56 h-56 rounded-full ${glow} blur-3xl pointer-events-none`} />
+      <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-purple-400/10 blur-2xl pointer-events-none" />
 
       {/* Header */}
-      <div className="flex items-start justify-between mb-4">
+      <div className="relative flex items-start justify-between mb-4">
         {validCoords ? (
           <a
             href={mapsUrl}
@@ -132,10 +170,12 @@ export default function CurrentWeather({
       </div>
 
       {/* Main temperature display */}
-      <div className="flex items-center gap-6 mb-6">
-        <div className="text-7xl leading-none select-none" role="img" aria-label={weather.label}>
-          {weather.icon}
-        </div>
+      <div className="relative flex items-center gap-6 mb-6">
+        <WeatherIcon
+          code={current.weather_code}
+          isDay={Boolean(current.is_day)}
+          size={80}
+        />
         <div>
           <div className="text-6xl font-thin text-gray-800 dark:text-white leading-none">
             {formatTemp(current.temperature, unit)}
@@ -148,7 +188,7 @@ export default function CurrentWeather({
       </div>
 
       {/* Stats grid */}
-      <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+      <div className="relative grid grid-cols-3 sm:grid-cols-6 gap-2">
         {statItem(<Droplets className="w-4 h-4" />, 'Humidity', `${current.relative_humidity}%`)}
         {statItem(
           <Wind className="w-4 h-4" />,
@@ -158,11 +198,11 @@ export default function CurrentWeather({
         {statItem(<Eye className="w-4 h-4" />, 'Visibility', `${(current.visibility / 1000).toFixed(1)} km`)}
         {statItem(<Thermometer className="w-4 h-4" />, 'UV Index', current.uv_index.toFixed(1))}
         {statItem(<Gauge className="w-4 h-4" />, 'Pressure', `${Math.round(current.surface_pressure)} hPa`)}
-        {statItem(<Sun className="w-4 h-4" />, 'Precipitation', `${current.precipitation.toFixed(1)} mm`)}
+        {statItem(<Sun className="w-4 h-4" />, 'Precip.', `${current.precipitation.toFixed(1)} mm`)}
       </div>
 
       {lastUpdated && (
-        <p className="text-xs text-gray-400 mt-3 text-right">
+        <p className="relative text-xs text-gray-400 mt-3 text-right">
           Updated {lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </p>
       )}
