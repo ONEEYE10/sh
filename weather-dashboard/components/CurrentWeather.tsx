@@ -74,25 +74,41 @@ export default function CurrentWeather({
 
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
-        <a
-          href={mapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 hover:opacity-75 transition-opacity"
-          title="View on Google Maps"
-        >
-          <MapPin className="w-4 h-4 text-blue-400" />
-          <div>
-            <h2 className="text-lg font-bold text-gray-800 dark:text-white leading-tight">
-              {location.name}
-            </h2>
-            {(location.admin1 || location.country) && (
-              <p className="text-xs text-gray-400">
-                {[location.admin1, location.country].filter(Boolean).join(', ')}
-              </p>
-            )}
+        {validCoords ? (
+          <a
+            href={mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 hover:opacity-75 transition-opacity"
+            title="View on Google Maps"
+          >
+            <MapPin className="w-4 h-4 text-blue-400" />
+            <div>
+              <h2 className="text-lg font-bold text-gray-800 dark:text-white leading-tight">
+                {location.name}
+              </h2>
+              {(location.admin1 || location.country) && (
+                <p className="text-xs text-gray-400">
+                  {[location.admin1, location.country].filter(Boolean).join(', ')}
+                </p>
+              )}
+            </div>
+          </a>
+        ) : (
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-blue-400" />
+            <div>
+              <h2 className="text-lg font-bold text-gray-800 dark:text-white leading-tight">
+                {location.name}
+              </h2>
+              {(location.admin1 || location.country) && (
+                <p className="text-xs text-gray-400">
+                  {[location.admin1, location.country].filter(Boolean).join(', ')}
+                </p>
+              )}
+            </div>
           </div>
-        </a>
+        )}
         <div className="flex items-center gap-2">
           <button
             onClick={onToggleFavorite}
