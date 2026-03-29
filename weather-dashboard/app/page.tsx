@@ -3,6 +3,7 @@
 import { useEffect, useCallback, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CloudSun, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
 
 import SearchBar from '@/components/SearchBar';
 import CurrentWeather from '@/components/CurrentWeather';
@@ -13,6 +14,8 @@ import WeatherAlerts from '@/components/WeatherAlerts';
 import ThemeToggle from '@/components/ThemeToggle';
 import UnitToggle from '@/components/UnitToggle';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import LifeIndex from '@/components/LifeIndex';
+import AllergyOutlook from '@/components/AllergyOutlook';
 
 import { useWeather } from '@/hooks/useWeather';
 import { useGeolocation } from '@/hooks/useGeolocation';
@@ -180,12 +183,16 @@ export default function WeatherDashboard() {
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-white/10 dark:bg-gray-900/60 border-b border-white/10 dark:border-gray-800/50">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
           {/* Logo */}
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <Link
+            href="/"
+            className="flex items-center gap-2 flex-shrink-0 hover:opacity-80 transition-opacity"
+            title="Home"
+          >
             <CloudSun className="w-6 h-6 text-blue-400" />
             <span className="font-bold text-gray-800 dark:text-white text-lg hidden sm:block">
-              WeatherDash
+              86° Weather
             </span>
-          </div>
+          </Link>
 
           {/* Search */}
           <div className="flex-1 max-w-xl">
@@ -288,6 +295,12 @@ export default function WeatherDashboard() {
                 sunrise={weather.data.daily.sunrise[0]}
                 sunset={weather.data.daily.sunset[0]}
               />
+
+              {/* Life Index */}
+              <LifeIndex current={weather.data.current} />
+
+              {/* Allergy Outlook */}
+              <AllergyOutlook current={weather.data.current} />
 
               {/* Favorites */}
               <FavoriteLocations

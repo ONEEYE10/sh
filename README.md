@@ -1,4 +1,10 @@
 # sh
+## 🌐 Live Demo
+
+**[👉 Open Weather Dashboard](https://oneeye10.github.io/sh/)**
+
+---
+
 # 👋 Hi, I'm Mouad | Business & UI/UX Explorer
 
 I’m a Business Administration student based in Istanbul, merging business logic with high-end digital aesthetics. I use the **GitHub Student Pack** and **AI-driven automation** to build "crazy" responsive websites inspired by anime-core UI and modern dark-mode design.
