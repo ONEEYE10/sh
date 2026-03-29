@@ -2,6 +2,12 @@
 
 A modern, responsive weather dashboard built with **Next.js**, **TypeScript**, **Tailwind CSS v4**, and **Framer Motion**. Powered by the free [Open-Meteo API](https://open-meteo.com) — no API key required!
 
+## 🌐 Live Demo
+
+**[https://oneeye10.github.io/sh/](https://oneeye10.github.io/sh/)**
+
+> The dashboard is automatically deployed to GitHub Pages on every push to `main`.
+
 ## ✨ Features
 
 - **Real-time Weather** — Current conditions including temperature, humidity, wind, UV index, and pressure
@@ -104,31 +110,27 @@ npm start
 
 ## 🚢 Deployment
 
-### Vercel (Recommended)
+### GitHub Pages (Auto-Deploy) ✅
+
+This project is already configured for GitHub Pages deployment!
+
+**How it works:**
+1. A GitHub Actions workflow (`.github/workflows/deploy.yml`) runs on every push to `main`
+2. It builds the static site and deploys it automatically
+3. The live site is available at: **https://oneeye10.github.io/sh/**
+
+**To enable GitHub Pages in your repo settings:**
+1. Go to **Settings → Pages**
+2. Set **Source** to **GitHub Actions**
+3. Push to `main` — the workflow will deploy automatically!
+
+### Vercel (Alternative)
 
 1. Push your code to GitHub
 2. Import the repository at [vercel.com/new](https://vercel.com/new)
 3. Set the root directory to `weather-dashboard`
-4. Deploy!
-
-### GitHub Pages
-
-For static export, update `next.config.ts`:
-
-```ts
-const nextConfig: NextConfig = {
-  output: 'export',
-  basePath: '/your-repo-name', // replace with your GitHub repository name
-  images: { unoptimized: true },
-};
-```
-
-Then run:
-
-```bash
-npm run build
-# Deploy the `out/` directory to GitHub Pages
-```
+4. Remove `output: 'export'` from `next.config.ts` (Vercel handles this)
+5. Deploy!
 
 ### Other Platforms
 
